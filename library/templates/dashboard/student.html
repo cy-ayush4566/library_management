@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block page_title %}My Library{% endblock %}{% block content %}
+<div class="card-grid compact"><article class="stat-card blue"><span>My Books</span><strong>{{ my_books }}</strong></article><article class="stat-card green"><span>Due Soon</span><strong>{{ due_soon }}</strong></article><article class="stat-card orange"><span>Overdue Books</span><strong>{{ overdue }}</strong></article><article class="stat-card red"><span>My Fines</span><strong>₹{{ my_fines }}</strong></article></div>
+<section class="panel"><div class="panel-heading"><h2>Currently Borrowed</h2><a href="{% url 'my_books' %}">View all</a></div>{% include 'transactions/table.html' with transactions=active_transactions student_view=True %}</section>
+{% endblock %}

@@ -1,0 +1,5 @@
+Django
+Flask
+requests
+Pillow
+python-dotenv

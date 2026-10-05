@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Library Management System{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="{% url 'dashboard' %}"><span class="brand-mark">L</span><span>Library<br><small>Management System</small></span></a>
+    <nav class="nav-links">
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      {% if is_member_role and not is_librarian %}
+        <a href="{% url 'book_list' %}">Browse Books</a><a href="{% url 'my_books' %}">My Books</a><a href="{% url 'my_history' %}">My History</a><a href="{% url 'my_fines' %}">My Fines</a><a href="{% url 'profile' %}">Profile</a>
+      {% else %}
+        <a href="{% url 'book_list' %}">Books</a>
+        {% if is_admin_role %}<a href="{% url 'author_list' %}">Authors</a><a href="{% url 'category_list' %}">Categories</a>{% endif %}
+        <a href="{% url 'member_list' %}">Members</a><a href="{% url 'issue_book' %}">Issue Book</a><a href="{% url 'return_book' %}">Return Book</a><a href="{% url 'transaction_list' %}">Transactions</a><a href="{% url 'overdue_list' %}">Overdue</a><a href="{% url 'fine_list' %}">Fines</a><a href="{% url 'reports' %}">Reports</a>
+        {% if is_admin_role %}<a href="/admin/">Users</a>{% endif %}
+      {% endif %}
+    </nav>
+    <form class="logout-form" method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Logout</button></form>
+  </aside>
+  <main class="main-content">
+    <header class="topbar"><div><span class="eyebrow">WELCOME BACK</span><h1>{% block page_title %}Dashboard{% endblock %}</h1></div><div class="user-chip">{{ user.get_full_name|default:user.username }}</div></header>
+    {% include 'includes/messages.html' %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% else %}{% block guest_content %}{% endblock %}{% endif %}
+</body>
+</html>
